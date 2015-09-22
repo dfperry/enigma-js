@@ -1,0 +1,23 @@
+.wheel {
+    float: left;
+    width: 150px;
+    border-left: 2px solid black;
+    padding: 3px 5px;
+}
+
+.rotors {
+    float: left;
+}
+
+.wheel input {
+    width: 25px;
+}
+
+.plugboard {
+    float: left;
+    clear: both;
+}
+
+.plugboard input {
+    width: 25px;
+}

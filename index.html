@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ENIGMA</title>
+    <link rel="stylesheet" type="text/css" href="css/enigma.css"
+
+
+  </head>
+  <body>
+
+    <div class="enigma">
+
+      <div class="wheels" data-bind="with: enigma">
+        <div class="wheel" data-bind="
+          template:{
+            name: 'wheel',
+            data: selectedStator
+          }" ></div>
+
+        <div class="rotors" data-bind="foreach: selectedRotors">
+          <div class="wheel" data-bind="
+            template:{
+              name: 'wheel'
+            }" ></div>
+        </div>
+
+        <div class="wheel" data-bind="
+          template:{
+            name: 'wheel',
+            data: selectedReflector
+          }" ></div>
+
+      </div>
+
+      <div class="io">
+        Input <input data-bind="value: input, valueUpdate: 'keyup', event:{keyup: run}" /><br/>
+        Output <span data-bind="text: output"></span>
+      </div>
+
+      <div class="plugboard" data-bind="with: enigma.plugboard">
+        Connections
+        <div>
+          <input data-bind="value: newConnection().left" />
+          <input data-bind="value: newConnection().right" />
+          <button data-bind="click: addConnection">Add </button>
+        </div>
+        <div data-bind="foreach: connections">
+          <div class="connection">
+            <span data-bind="text: left"></span> -
+            <span data-bind="text: right"></span>
+            <button data-bind="click: $parent.removeConnection">X</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </body>
+
+  <script type="text/html" id="wheel">
+    <div class="info">
+      <div data-bind="text: type"></div>
+      <div data-bind="text: name"></div>
+      <div data-bind="text: model"></div>
+      Init: <input data-bind="value: initialPosition"/>
+    </div>
+    Current: <span data-bind="text: current"></span>
+  </script>
+  <!-- include scripts -->
+  <script type="text/javascript" src="js/vendor/knockout/knockout-3.2.0.js" ></script>
+  <script type="text/javascript" src="js/vendor/knockout/knockout-postbox-0.4.2-min.js"></script>
+  <script type="text/javascript" src="js/vendor/knockout/knockout.mapping-2.4.1.js"></script>
+
+  <script type="text/javascript" src="js/app/enigma/utilities.js"></script>
+  <script type="text/javascript" src="js/app/enigma/components/Plugboard.js"></script>
+  <script type="text/javascript" src="js/app/enigma/components/Rotor.js"></script>
+  <script type="text/javascript" src="js/app/enigma/components/Reflector.js"></script>
+  <script type="text/javascript" src="js/app/enigma/components/Stator.js"></script>
+  <script type="text/javascript" src="js/app/enigma/config.js"></script>
+  <script type="text/javascript" src="js/app/enigma/Enigma.js"></script>
+  <script type="text/javascript" src="js/app/AppVM.js"></script>
+
+  <script type="text/javascript">
+
+    appVM = new AppVM();
+
+    appVM.init();
+
+    ko.applyBindings(appVM);
+
+  </script>
+</html>
+
