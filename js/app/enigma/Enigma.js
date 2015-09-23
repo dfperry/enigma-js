@@ -34,9 +34,9 @@ var Enigma = function(config) {
     self.testConfig = function() {
         self.selectedStator(self.availableStators()[2]);
         self.selectedReflector(self.availableReflectors()[3]);
-        self.selectedRotors.push(self.availableRotors()[3]);
-        self.selectedRotors.push(self.availableRotors()[4]);
-        self.selectedRotors.push(self.availableRotors()[5]);
+        self.selectedRotors.push(self.availableRotors()[9]);
+        self.selectedRotors.push(self.availableRotors()[10]);
+        self.selectedRotors.push(self.availableRotors()[11]);
     };
 
     var reset = function () {
