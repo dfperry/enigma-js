@@ -21,3 +21,7 @@
 .plugboard input {
     width: 25px;
 }
+
+.io .input {
+    text-transform: uppercase;
+}
