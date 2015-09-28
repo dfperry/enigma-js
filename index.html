@@ -10,7 +10,7 @@
 
     <div class="enigma">
 
-      <div class="wheels" data-bind="with: enigma">
+      <div class="wheels component" data-bind="with: enigma">
         <div class="wheel" data-bind="
           template:{
             name: 'wheel',
@@ -32,12 +32,13 @@
 
       </div>
 
-      <div class="io">
-        Input <input class="input" data-bind="value: input, valueUpdate: 'keyup', event:{keyup: run}" type="text" /><br/>
-        Output <span data-bind="text: output"></span>
+      <div class="io component">
+        Input <textarea class="input" data-bind="textInput: input"></textarea><br/>
+        <label><input type="checkbox" data-bind="checked: preserveWhitespace"/>Preserve Whitespace</label><br/>
+        Output <span class="output" data-bind="text: output"></span>
       </div>
 
-      <div class="plugboard" data-bind="with: enigma.plugboard">
+      <div class="plugboard component" data-bind="with: enigma.plugboard">
         Connections
         <div>
           <input data-bind="value: newConnection().left" />

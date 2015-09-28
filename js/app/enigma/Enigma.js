@@ -52,12 +52,16 @@ var Enigma = function(config) {
     };
 
 
-    self.encode = function(string) {
+    self.encode = function(string, preserveWhitespace) {
 
         reset();
 
         // cleanup input
-        string = string.replace(/[^a-zA-Z]/gmi, '').replace(/\W+/g, '');
+        string = string.replace(/[^a-zA-Z\W]/gmi, '');
+
+        if( !preserveWhitespace) {
+            string = string.replace(/\W+/g, '');
+        }
 
         var message = '';
         for( var i = 0, len = string.length; i < len; i++) {
@@ -65,6 +69,13 @@ var Enigma = function(config) {
             var r = 0,
                 rLen = self.selectedRotors().length,
                 log = '';
+
+            var c = string.charAt(i);
+
+            if( preserveWhitespace && c.match(/\W/)) {
+                message += c;
+                continue;
+            }
 
             // advance the rotors
             var advance = true;
@@ -81,7 +92,6 @@ var Enigma = function(config) {
             }
             log += ' ' + self.selectedStator().current() + '] ';
 
-            var c = string.charAt(i);
             log += c + ' > ';
 
             var encoded = '';
@@ -117,9 +127,11 @@ var Enigma = function(config) {
 
             message += encoded;
 
-            // group the message into 5-char parts
-            if( i > 0 && (i+1) % 5 == 0 ) {
-                message += ' ';
+            if( !preserveWhitespace ) {
+                // group the message into 5-char parts
+                if( i > 0 && (i+1) % 5 == 0 ) {
+                    message += ' ';
+                }
             }
         }
 

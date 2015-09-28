@@ -2,16 +2,17 @@ var AppVM = function() {
     'use strict';
 
     var enigma = new Enigma(config),
-        filteredInput = ko.observable(),
-        input = ko.observable(),
-        changed = ko.observable(false),
-        output = ko.observable();
+        input = ko.observable(''),
+        output = ko.observable(''),
+        preserveWhitespace = ko.observable(true);
 
-    input.subscribe(function (val) {
-        val = val.replace(/[^a-zA-Z]/gmi, '').replace(/\W+/g, '');
-        changed(changed() || (val != filteredInput()));
-        filteredInput(val);
-        input(val);
+    var filteredInput = ko.computed(function() {
+        var string = input().replace(/[^a-zA-Z\s]/gmi, '');
+        if( !preserveWhitespace() ) {
+            string = string.replace(/\W+/g, '');
+        }
+
+        return string;
     });
 
     var init = function() {
@@ -19,21 +20,16 @@ var AppVM = function() {
         enigma.testConfig();
     };
 
-
-
-    var run = function() {
-        if( changed() ) {
-            changed(false);
-            output(enigma.encode(filteredInput()));
-        }
-    };
+    var run = ko.computed(function () {
+        output(enigma.encode(filteredInput(), preserveWhitespace()));
+    });
 
     return {
         init: init,
         input: input,
+        preserveWhitespace: preserveWhitespace,
         output: output,
-        enigma: enigma,
-        run: run
+        enigma: enigma
 
     }
 };

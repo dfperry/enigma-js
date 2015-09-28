@@ -13,8 +13,12 @@
     width: 25px;
 }
 
-.plugboard {
+.component {
+    border: 1px solid black;
     float: left;
+}
+
+.plugboard {
     clear: both;
 }
 
@@ -24,4 +28,14 @@
 
 .io .input {
     text-transform: uppercase;
+}
+
+.output {
+    display: inline-block;
+}
+
+.input, .output {
+    height: 100px;
+    width: 250px;
+    border: 1px solid #aaa;
 }
