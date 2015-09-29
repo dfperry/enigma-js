@@ -61,6 +61,14 @@ var Reflector = function (name, model, wiring, turnoverPositions, ring) {
         }
     });
 
+    self.previous = ko.computed(function(){
+        return self.wiring[(self.position() -1 + self.ROTOR_SIZE) % self.ROTOR_SIZE];
+    });
+
+    self.next = ko.computed(function(){
+        return self.wiring[(self.position() +1 + self.ROTOR_SIZE) % self.ROTOR_SIZE];
+    });
+
     self.encode = function(c) {
         var i = AToI(c);
         var arrayVal = map[(self.position() + i < 0)

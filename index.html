@@ -2,8 +2,8 @@
 <html>
   <head>
     <title>ENIGMA</title>
-    <link rel="stylesheet" type="text/css" href="css/enigma.css"
-
+    <link rel="stylesheet" type="text/css" href="css/enigma.css" />
+    <link rel="stylesheet" type="text/css" href="js/vendor/jquery-ui/jquery-ui.min.css" />
 
   </head>
   <body>
@@ -11,24 +11,19 @@
     <div class="enigma">
 
       <div class="wheels component" data-bind="with: enigma">
-        <div class="wheel" data-bind="
+        <span data-bind="
           template:{
             name: 'wheel',
             data: selectedStator
-          }" ></div>
+          }" ></span>
 
-        <div class="rotors" data-bind="foreach: selectedRotors">
-          <div class="wheel" data-bind="
-            template:{
-              name: 'wheel'
-            }" ></div>
-        </div>
+        <div class="rotors" data-bind="sortable: {template: 'wheel', data: selectedRotors}"></div>
 
-        <div class="wheel" data-bind="
+        <span data-bind="
           template:{
             name: 'wheel',
             data: selectedReflector
-          }" ></div>
+          }" ></span>
 
       </div>
 
@@ -59,16 +54,27 @@
   </body>
 
   <script type="text/html" id="wheel">
-    <div class="info">
-      <div data-bind="text: type"></div>
-      <div data-bind="text: name"></div>
-      <div data-bind="text: model"></div>
-      Init: <input data-bind="value: initialPosition"/>
+    <div class="wheel">
+      <div class="info">
+        <div data-bind="text: type"></div>
+        <div data-bind="text: name"></div>
+        <div data-bind="text: model"></div>
+        Init: <input class="init" data-bind="value: initialPosition"/>
+      </div>
+      <div class="status">
+        <div data-bind="text: next"></div>
+        <div class="current" data-bind="text: current"></div>
+        <div data-bind="text: previous"></div>
+      </div>
     </div>
-    Current: <span data-bind="text: current"></span>
+
   </script>
   <!-- include scripts -->
+  <script type="text/javascript" src="js/vendor/jquery/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="js/vendor/jquery-ui/jquery-ui.min.js"></script>
+
   <script type="text/javascript" src="js/vendor/knockout/knockout-3.2.0.js" ></script>
+  <script type="text/javascript" src="js/vendor/knockout/knockout-sortable-0.11.0.min.js"></script>
   <script type="text/javascript" src="js/vendor/knockout/knockout-postbox-0.4.2-min.js"></script>
   <script type="text/javascript" src="js/vendor/knockout/knockout.mapping-2.4.1.js"></script>
 

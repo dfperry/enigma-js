@@ -14,7 +14,17 @@ var Rotor = function(name, model, wiring, turnoverPositions, ring) {
     self.model = model;
     self.type = 'Rotor';
 
-    self.initialPosition = ko.observable('A');
+    var initialPosition = ko.observable('A');
+    self.initialPosition = ko.computed({
+        read: function() {
+            return initialPosition();
+        },
+        write: function(val) {
+            if(val && val.length == 1 && (self.wiring.indexOf(val.toUpperCase()) > -1)) {
+                initialPosition(val.toUpperCase());
+            }
+        }
+    });
 
     var map = {},
         rev = {},
@@ -62,6 +72,14 @@ var Rotor = function(name, model, wiring, turnoverPositions, ring) {
         write: function(val) {
             self.move(val);
         }
+    });
+
+    self.previous = ko.computed(function(){
+        return self.wiring[(self.position() -1 + self.ROTOR_SIZE) % self.ROTOR_SIZE];
+    });
+
+    self.next = ko.computed(function(){
+        return self.wiring[(self.position() +1 + self.ROTOR_SIZE) % self.ROTOR_SIZE];
     });
 
     self.encode = function(c, forward) {

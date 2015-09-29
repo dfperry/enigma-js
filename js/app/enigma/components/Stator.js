@@ -54,6 +54,14 @@ var Stator = function (name, model, wiring) {
         return self.wiring[self.position()];
     });
 
+    self.previous = ko.computed(function(){
+        return self.wiring[(self.position() -1 + self.ROTOR_SIZE) % self.ROTOR_SIZE];
+    });
+
+    self.next = ko.computed(function(){
+        return self.wiring[(self.position() +1 + self.ROTOR_SIZE) % self.ROTOR_SIZE];
+    });
+
     self.encode = function(c, forward) {
         var i = AToI(c);
         var mapping = forward ? map : rev;
