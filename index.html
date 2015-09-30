@@ -14,7 +14,7 @@
         <span data-bind="
           template:{
             name: 'wheel',
-            data: selectedStator
+            data: selectedReflector
           }" ></span>
 
         <div class="rotors" data-bind="sortable: {template: 'wheel', data: selectedRotors}"></div>
@@ -22,17 +22,10 @@
         <span data-bind="
           template:{
             name: 'wheel',
-            data: selectedReflector
+            data: selectedStator
           }" ></span>
 
       </div>
-
-      <div class="io component">
-        Input <textarea class="input" data-bind="textInput: input"></textarea><br/>
-        <label><input type="checkbox" data-bind="checked: preserveWhitespace"/>Preserve Whitespace</label><br/>
-        Output <span class="output" data-bind="text: output"></span>
-      </div>
-
       <div class="plugboard component" data-bind="with: enigma.plugboard">
         Connections
         <div>
@@ -48,6 +41,16 @@
           </div>
         </div>
       </div>
+      <div class="io component">
+        <span class="panel">Input <br/>
+          <textarea class="input" data-bind="textInput: input"></textarea><br/>
+          <label><input type="checkbox" data-bind="checked: preserveWhitespace"/>Preserve Whitespace</label><br/>
+        </span>
+        <span class="panel">Output <br/>
+          <span class="output" data-bind="text: output"></span>
+        </span>
+      </div>
+
 
     </div>
 

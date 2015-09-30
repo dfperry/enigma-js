@@ -79,7 +79,7 @@ var Enigma = function(config) {
 
             // advance the rotors
             var advance = true;
-            for( r = 0; r < rLen && advance; r++) {
+            for( r = rLen-1; r >=0; r--) {
                 if( advance ) {
                     advance = self.selectedRotors()[r].advance();
                 }
@@ -102,7 +102,7 @@ var Enigma = function(config) {
             encoded = self.selectedStator().encode(encoded, false);
             log += '[' + encoded + '] > ';
 
-            for(r = 0; r < rLen;r++) {
+            for(r = rLen-1; r >=0; r--) {
                 encoded = self.selectedRotors()[r].encode(encoded, false);
                 log += encoded + ' > ';
             }
@@ -112,7 +112,7 @@ var Enigma = function(config) {
             log += '(' + encoded + ') > ';
 
             // pass the message back
-            for(r = rLen-1; r >=0; r--) {
+            for(r = 0; r < rLen; r++) {
                 encoded = self.selectedRotors()[r].encode(encoded, true);
                 log += encoded + ' > ';
             }

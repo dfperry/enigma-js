@@ -43,15 +43,26 @@
 
 .component {
     border: 1px solid black;
+    border-radius: 5px;
+    margin: 5px 0 0 5px;
+    padding: 5px;
     float: left;
+}
+.component .panel {
+    display: inline-block;
+    vertical-align: top;
 }
 
 .plugboard {
-    clear: both;
+    float: left;
 }
 
 .plugboard input {
     width: 25px;
+}
+
+.io {
+    clear: both;
 }
 
 .io .input {
@@ -60,6 +71,7 @@
 
 .output {
     display: inline-block;
+    word-break: break-word;
 }
 
 .input, .output {
