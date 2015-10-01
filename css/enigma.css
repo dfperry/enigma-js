@@ -5,6 +5,11 @@
     padding: 5px;
     float: left;
 }
+
+.model {
+    float: none;
+}
+
 .component .panel {
     display: inline-block;
     vertical-align: top;

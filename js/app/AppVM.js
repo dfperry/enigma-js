@@ -15,9 +15,21 @@ var AppVM = function() {
         return string;
     });
 
+    var models = ko.observableArray(['1', '2', '3']);
+    var selectedModel = ko.observable();
+
+    var loadConfigurations = function(config){
+        for( var s = 0, sLen = config.stators.length; s < sLen; s++ ) {
+
+        }
+    };
+
     var init = function() {
         enigma.init();
         enigma.testConfig();
+
+        //loadConfigurations(config);
+
     };
 
     var run = ko.computed(function () {
@@ -29,7 +41,10 @@ var AppVM = function() {
         input: input,
         preserveWhitespace: preserveWhitespace,
         output: output,
-        enigma: enigma
+        enigma: enigma,
+
+        models: models,
+        selectedModel: selectedModel
 
     }
 };
