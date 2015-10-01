@@ -42,7 +42,7 @@ var Stator = function (name, model, wiring) {
     };
 
     self.move = function(ch) {
-        self.position(self.wiring.indexOf(ch));
+        self.position(baseWiring.indexOf(ch));
     };
 
     self.advance = function() {
@@ -51,15 +51,15 @@ var Stator = function (name, model, wiring) {
     };
 
     self.current = ko.computed(function () {
-        return self.wiring[self.position()];
+        return baseWiring[self.position()];
     });
 
     self.previous = ko.computed(function(){
-        return self.wiring[(self.position() -1 + self.ROTOR_SIZE) % self.ROTOR_SIZE];
+        return baseWiring[(self.position() -1 + self.ROTOR_SIZE) % self.ROTOR_SIZE];
     });
 
     self.next = ko.computed(function(){
-        return self.wiring[(self.position() +1 + self.ROTOR_SIZE) % self.ROTOR_SIZE];
+        return baseWiring[(self.position() +1 + self.ROTOR_SIZE) % self.ROTOR_SIZE];
     });
 
     self.encode = function(c, forward) {

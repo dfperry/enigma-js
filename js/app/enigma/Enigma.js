@@ -51,6 +51,16 @@ var Enigma = function(config) {
         }
     };
 
+    var advanceRotors = function() {
+        var rLen = self.selectedRotors().length;
+
+        var advance = self.selectedStator().advance();
+
+        for( var r = rLen-1; r >=0; r--) {
+            advance = self.selectedRotors()[r].advance(advance);
+        }
+    };
+
 
     self.encode = function(string, preserveWhitespace) {
 
@@ -77,13 +87,7 @@ var Enigma = function(config) {
                 continue;
             }
 
-            // advance the rotors
-            var advance = true;
-            for( r = rLen-1; r >=0; r--) {
-                if( advance ) {
-                    advance = self.selectedRotors()[r].advance();
-                }
-            }
+            advanceRotors();
 
             // print the current rotor positions
             log += '[' + self.selectedReflector().current() + ' ';

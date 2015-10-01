@@ -57,17 +57,22 @@ var Rotor = function(name, model, wiring, turnoverPositions, ring) {
     };
 
     self.move = function(ch) {
-        self.position(self.wiring.indexOf(ch));
+        self.position(baseWiring.indexOf(ch));
     };
 
-    self.advance = function() {
-        self.position( (self.position() + 1 ) % self.wiring.length);
-        return turnoverMap.indexOf(self.position()) > -1;
+    self.advance = function(fromPrevious) {
+        var advanceNext = false;
+        if( fromPrevious || turnoverMap.indexOf(self.position()) > -1) {
+            advanceNext = turnoverMap.indexOf(self.position()) > -1;
+            self.position( (self.position() + 1 ) % self.wiring.length);
+        }
+
+        return advanceNext;
     };
 
     self.current = ko.computed({
         read:function () {
-            return self.wiring[self.position()];
+            return baseWiring[self.position()];
         },
         write: function(val) {
             self.move(val);
@@ -75,11 +80,11 @@ var Rotor = function(name, model, wiring, turnoverPositions, ring) {
     });
 
     self.previous = ko.computed(function(){
-        return self.wiring[(self.position() -1 + self.ROTOR_SIZE) % self.ROTOR_SIZE];
+        return baseWiring[(self.position() -1 + self.ROTOR_SIZE) % self.ROTOR_SIZE];
     });
 
     self.next = ko.computed(function(){
-        return self.wiring[(self.position() +1 + self.ROTOR_SIZE) % self.ROTOR_SIZE];
+        return baseWiring[(self.position() +1 + self.ROTOR_SIZE) % self.ROTOR_SIZE];
     });
 
     self.encode = function(c, forward) {
