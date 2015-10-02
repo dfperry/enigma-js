@@ -3,67 +3,201 @@ var Enigma = function(config) {
 
     var self = this;
 
-    self.availableRotors = ko.observableArray([]);
-    self.availableReflectors = ko.observableArray([]);
-    self.availableStators = ko.observableArray([]);
+    var masterRotors = [];
+    var masterReflectors = [];
+    var masterStators = [];
 
-    self.selectedReflector = ko.observable(null);
-    self.selectedRotors = ko.observableArray([]);
-    self.selectedStator = ko.observable(null);
+    var selectedReflector = ko.observable(null);
+    var selectedRotors = ko.observableArray([]);
+    var selectedStator = ko.observable(null);
 
-    self.plugboard = new Plugboard();
+    var availableRotors = ko.observableArray([]);
+    var availableReflectors = ko.observableArray([]);
+    var availableStators = ko.observableArray([]);
 
-    self.init = function() {
+    var plugboard = ko.observable(new Plugboard());
+
+    var models = ko.observableArray([]);
+    var selectedModel = ko.observable('', false);
+
+    selectedModel.subscribe(function (val) {
+
+        // update rotors
+        var rotors = [];
+        var rotorModels = [];
+        // first pass gets the matching rotors and names of base models
+        for( var r = 0, rLen = masterRotors.length; r < rLen; r++) {
+            var rotor = masterRotors[r];
+            if( rotor.model == val || !rotor.model) {
+                rotors.push(rotor);
+
+                // grab base model names
+                for( var rm = 0, rmLen = rotor.base.length; rm < rmLen; rm++ ) {
+                    if(rotorModels.indexOf(rotor.base[rm]) == -1) {
+                        rotorModels.push(rotor.base[rm]);
+                    }
+                }
+            }
+        }
+        // second pass gets rotors matching the base models
+        if( rotorModels.length > 0 ) {
+            for( r = rLen-1; r >=0; r-- ) {
+                rotor = masterRotors[r];
+                if(rotorModels.indexOf(rotor.model) !== -1) {
+                    rotors.unshift(rotor);
+                }
+            }
+        }
+        availableRotors(rotors);
+        if( rotors.length > 3 ) {
+            selectedRotors(rotors.slice(-3));
+        }
+        else {
+            selectedRotors(rotors);
+        }
+
+
+        // update the stators
+        var stators = [];
+        var statorModels = [];
+        // first pass gets the matching stators and names of base models
+        for( var s = 0, sLen = masterStators.length; s < sLen; s++) {
+            var stator = masterStators[s];
+            if( stator.model == val || !stator.model) {
+                stators.push(stator);
+
+                // grab base model names
+                for( var sm = 0, smLen = stator.base.length; sm < smLen; sm++ ) {
+                    if(statorModels.indexOf(stator.base[sm]) == -1) {
+                        statorModels.push(stator.base[sm]);
+                    }
+                }
+            }
+        }
+        // second pass gets stators matching the base models
+        if( statorModels.length > 0 ) {
+            for( s = sLen-1; s >=0; s-- ) {
+                stator = masterStators[r];
+                if(statorModels.indexOf(stator.model) !== -1) {
+                    stators.unshift(stator);
+                }
+            }
+        }
+        availableStators(stators);
+        selectedStator(stators[0]);
+
+        // update the reflectors
+        var reflectors = [];
+        var reflectorModels = [];
+        // first pass gets the matching reflectors and names of base models
+        for( var f = 0, fLen = masterReflectors.length; f < fLen; f++) {
+            var reflector = masterReflectors[f];
+            if( reflector.model == val || !reflector.model) {
+                reflectors.push(reflector);
+
+                // grab base model names
+                for( var fm = 0, fmLen = reflector.base.length; fm < fmLen; fm++ ) {
+                    if(reflectorModels.indexOf(reflector.base[fm]) == -1) {
+                        reflectorModels.push(reflector.base[fm]);
+                    }
+                }
+            }
+        }
+        // second pass gets reflectors matching the base models
+        if( reflectorModels.length > 0 ) {
+            for( f = fLen-1; f >=0; f-- ) {
+                reflector = masterReflectors[f];
+                if(reflectorModels.indexOf(reflector.model) !== -1) {
+                    reflectors.unshift(reflector);
+                }
+            }
+        }
+        availableReflectors(reflectors);
+        selectedReflector(reflectors[0]);
+    });
+
+    var init = function() {
         for(var rot = 0, rotLen = config.rotors.length; rot < rotLen; rot++) {
             var rotor = config.rotors[rot];
-            self.availableRotors.push(
-                new Rotor(rotor.name, rotor.model, rotor.wiring, rotor.turnoverPositions));
+            masterRotors.push(
+                new Rotor(rotor.name, rotor.model, rotor.base, rotor.wiring, rotor.turnoverPositions));
+
+            if(rotor.model && models.indexOf(rotor.model) == -1) {
+                models.push(rotor.model);
+            }
         }
         for(var ref = 0, refLen = config.reflectors.length; ref < refLen; ref++) {
             var reflector = config.reflectors[ref];
-            self.availableReflectors.push(
-                new Reflector(reflector.name, reflector.model, reflector.wiring, reflector.turnoverPositions));
+            masterReflectors.push(
+                new Reflector(reflector.name, reflector.model, reflector.base, reflector.wiring, reflector.turnoverPositions));
+
+            if(reflector.model && models.indexOf(reflector.model) == -1) {
+                models.push(reflector.model);
+            }
         }
         for(var sta = 0, staLen = config.stators.length; sta < staLen; sta++) {
             var stator = config.stators[sta];
-            self.availableStators.push(new Stator(stator.name, stator.model, stator.wiring));
+            masterStators.push(new Stator(stator.name, stator.model, stator.base, stator.wiring));
+
+            if(stator.model && models.indexOf(stator.model) == -1) {
+                models.push(stator.model);
+            }
         }
 
     };
 
-    self.testConfig = function() {
-        self.selectedStator(self.availableStators()[2]);
-        self.selectedReflector(self.availableReflectors()[3]);
-        self.selectedRotors.push(self.availableRotors()[9]);
-        self.selectedRotors.push(self.availableRotors()[10]);
-        self.selectedRotors.push(self.availableRotors()[11]);
-        self.selectedRotors.push(self.availableRotors()[12]);
+    var addRotor = function(rotor) {
+        var found = false;
+
+        for( var i = 0, len = selectedRotors().length; i < len; i++ ) {
+            if( selectedRotors()[i].name == rotor.name ) {
+                found = true;
+                break;
+            }
+        }
+
+        if(!found) {
+            selectedRotors.push(rotor.clone());
+        }
+    };
+
+    var removeRotor = function(rotor) {
+        selectedRotors.remove(rotor);
+    };
+
+    var testConfig = function() {
+        selectedStator(masterStators[2]);
+        selectedReflector(masterReflectors[3]);
+        selectedRotors.push(masterRotors[9]);
+        selectedRotors.push(masterRotors[10]);
+        selectedRotors.push(masterRotors[11]);
+        selectedRotors.push(masterRotors[12]);
     };
 
     var reset = function () {
-        if( self.selectedStator() ) {
-            self.selectedStator().reset();
+        if( selectedStator() ) {
+            selectedStator().reset();
         }
-        for( var i = 0, len = self.selectedRotors().length; i < len; i++ ) {
-            self.selectedRotors()[i].reset();
+        for( var i = 0, len = selectedRotors().length; i < len; i++ ) {
+            selectedRotors()[i].reset();
         }
-        if( self.selectedReflector() ) {
-            self.selectedReflector().reset();
+        if( selectedReflector() ) {
+            selectedReflector().reset();
         }
     };
 
     var advanceRotors = function() {
-        var rLen = self.selectedRotors().length;
+        var rLen = selectedRotors().length;
 
-        var advance = self.selectedStator().advance();
+        var advance = selectedStator().advance();
 
         for( var r = rLen-1; r >=0; r--) {
-            advance = self.selectedRotors()[r].advance(advance);
+            advance = selectedRotors()[r].advance(advance);
         }
     };
 
 
-    self.encode = function(string, preserveWhitespace) {
+    var encode = function(string, preserveWhitespace) {
 
         reset();
 
@@ -78,7 +212,7 @@ var Enigma = function(config) {
         for( var i = 0, len = string.length; i < len; i++) {
 
             var r = 0,
-                rLen = self.selectedRotors().length,
+                rLen = selectedRotors().length,
                 log = '';
 
             var c = string.charAt(i);
@@ -91,44 +225,44 @@ var Enigma = function(config) {
             advanceRotors();
 
             // print the current rotor positions
-            log += '[' + self.selectedReflector().current() + ' ';
+            log += '[' + selectedReflector().current() + ' ';
             for(r = rLen-1; r >=0; r--) {
-                log += self.selectedRotors()[r].current();
+                log += selectedRotors()[r].current();
             }
-            log += ' ' + self.selectedStator().current() + '] ';
+            log += ' ' + selectedStator().current() + '] ';
 
             log += c + ' > ';
 
             var encoded = '';
             // filter through the plugboard
-            encoded = self.plugboard.map(c);
+            encoded = plugboard().map(c);
 
             // pass the message from stator to reflector
-            encoded = self.selectedStator().encode(encoded, false);
+            encoded = selectedStator().encode(encoded, false);
             log += '[' + encoded + '] > ';
 
             for(r = rLen-1; r >=0; r--) {
-                encoded = self.selectedRotors()[r].encode(encoded, false);
+                encoded = selectedRotors()[r].encode(encoded, false);
                 log += encoded + ' > ';
             }
 
             // pass the message through the reflector
-            encoded = self.selectedReflector().encode(encoded, false);
+            encoded = selectedReflector().encode(encoded, false);
             log += '(' + encoded + ') > ';
 
             // pass the message back
             for(r = 0; r < rLen; r++) {
-                encoded = self.selectedRotors()[r].encode(encoded, true);
+                encoded = selectedRotors()[r].encode(encoded, true);
                 log += encoded + ' > ';
             }
 
             // pass the message back through the stator
-            encoded = self.selectedStator().encode(encoded, true);
+            encoded = selectedStator().encode(encoded, true);
             log += '[' + encoded + ']';
             console.log(log);
 
             // filter through the plugboard
-            encoded = self.plugboard.map(encoded);
+            encoded = plugboard().map(encoded);
 
             message += encoded;
 
@@ -142,4 +276,21 @@ var Enigma = function(config) {
 
         return message;
     };
+    
+    return {
+        availableReflectors: availableReflectors,
+        availableRotors: availableRotors,
+        availableStators: availableStators,
+        encode: encode,
+        models: models,
+        selectedModel: selectedModel,
+        init: init,
+        testConfig: testConfig,
+        plugboard: plugboard,
+        selectedReflector: selectedReflector,
+        selectedRotors: selectedRotors,
+        selectedStator: selectedStator,
+        addRotor: addRotor,
+        removeRotor: removeRotor
+    }
 };

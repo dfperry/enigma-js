@@ -1,3 +1,11 @@
+.enigma {
+    width: 975px;
+    margin: 10px auto;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 10px;
+}
+
 .component {
     border: 1px solid black;
     border-radius: 5px;
@@ -18,7 +26,7 @@
 .wheel {
     float: left;
     width: 100px;
-    height: 175px;
+    height: 200px;
     border: 1px solid black;
     border-radius: 5px;
     padding: 9px 5px;
@@ -37,6 +45,27 @@
     cursor: move;
 }
 
+.wheels .rotors {
+    height: 270px;
+    min-width: 110px;
+}
+
+.wheels select {
+    width: 110px;
+}
+
+.wheels .wrapper {
+    float: left;
+    border:  1px solid black;
+    padding:  5px;
+    border-radius:  5px;
+    margin-right: 5px;
+}
+
+.wheels .label {
+    height: 50px;
+}
+
 .rotors {
     float: left;
     border: 1px solid black;
@@ -44,7 +73,6 @@
     background-color: #eee;
     margin-right: 5px;
     border-radius: 5px;
-    margin-top: -5px;
 }
 
 .wheel input {
@@ -59,7 +87,7 @@
     text-align: center;
     left: 0;
     right: 0;
-    
+
 }
 
 .wheel .status {
@@ -84,6 +112,7 @@
 
 .plugboard {
     float: left;
+    clear:  both;
 }
 
 .plugboard input {
@@ -107,4 +136,50 @@
     height: 100px;
     width: 250px;
     border: 1px solid #aaa;
+}
+
+.model .wheel {
+    height: inherit;;
+}
+
+.model .wheel .config, .model .wheel .status {
+    display: none;
+}
+
+.model .wheel .added-actions {
+    display: none;
+}
+
+.wheels .wheel .available-actions {
+    display: none;
+}
+
+.wheels .wheel .added-actions {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 115px;
+}
+
+.wheels .rotors .wheel:hover {
+    box-shadow: 2px 2px 5px #aaa;
+    margin-top: -1px;
+    margin-right: 6px;
+    margin-left: -1px;
+}
+
+.wheels .rotors .wheel.ui-sortable-helper {
+    box-shadow: 5px 5px 25px #555;
+}
+
+.connection {
+    display: inline-block;
+    border: 1px solid black;
+    padding: 2px;
+    border-radius: 5px;
+    margin-top: 3px;
+}
+
+.clearfix {
+    clear: both;
 }

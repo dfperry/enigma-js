@@ -1,4 +1,4 @@
-var Rotor = function(name, model, wiring, turnoverPositions, ring) {
+var Rotor = function(name, model, base, wiring, turnoverPositions, ring) {
     'use strict';
 
     var baseWiring = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -12,6 +12,7 @@ var Rotor = function(name, model, wiring, turnoverPositions, ring) {
     self.turnoverPositions = turnoverPositions ? turnoverPositions.toUpperCase() : '';
     self.name = name;
     self.model = model;
+    self.base = base;
     self.type = 'Rotor';
 
     var initialPosition = ko.observable('A');
@@ -98,4 +99,8 @@ var Rotor = function(name, model, wiring, turnoverPositions, ring) {
 
     // initialize
     self.reset();
+
+    self.clone = function() {
+        return new Rotor(name, model, base, wiring, turnoverPositions, ring);
+    }
 };

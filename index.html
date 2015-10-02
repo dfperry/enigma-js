@@ -8,36 +8,51 @@
   </head>
   <body>
 
-    <div class="enigma">
-      <!--<div class="model component">-->
-        <!--Presets <select data-bind="value: selectedModel, options: models"></select>-->
-        <!--<div class="panel">-->
-          <!--Reflectors-->
-        <!--</div>-->
-        <!--<div class="panel">-->
-          <!--Rotors-->
-        <!--</div>-->
-        <!--<div class="panel">-->
-          <!--Stators-->
-        <!--</div>-->
-      <!--</div>-->
-      <div class="wheels component" data-bind="with: enigma">
-        <span data-bind="
+    <div class="enigma" data-bind="with: enigma">
+      <div class="model component">
+        Presets <select data-bind="value: selectedModel, options: models"></select><br/>
+        Available Rotors<br/>
+        <div class="panel">
+          <div class="rotors">
+            <div data-bind="template: {name: 'wheel', foreach: availableRotors}"></div>
+          </div>
+        </div>
+      </div>
+      <div class="wheels component" >
+        <span class="wrapper">
+          <div class="label">
+            Reflector <br/>
+            <select data-bind="value: selectedReflector, options: availableReflectors, optionsText: 'name'"></select><br/>
+          </div>
+          <span data-bind="
           template:{
             name: 'wheel',
-            data: selectedReflector
+            data: selectedReflector,
+            if: selectedReflector
           }" ></span>
+        </span>
 
-        <div class="rotors" data-bind="sortable: {template: 'wheel', data: selectedRotors}"></div>
+        <div class="rotors" >
+          <div class="label">Rotors</div>
+          <div data-bind="sortable: {template: 'wheel', data: selectedRotors}"></div>
+        </div>
 
-        <span data-bind="
+        <span class="wrapper">
+          <div class="label">
+            Stator <br/>
+            <select data-bind="value: selectedStator, options: availableStators, optionsText: 'name'"></select><br/>
+          </div>
+          <span data-bind="
           template:{
             name: 'wheel',
-            data: selectedStator
+            data: selectedStator,
+            if: selectedStator
           }" ></span>
+        </span>
+
 
       </div>
-      <div class="plugboard component" data-bind="with: enigma.plugboard">
+      <div class="plugboard component" data-bind="with: plugboard">
         Connections
         <div>
           <input data-bind="value: newConnection().left" />
@@ -54,15 +69,15 @@
       </div>
       <div class="io component">
         <span class="panel">Input <br/>
-          <textarea class="input" data-bind="textInput: input"></textarea><br/>
-          <label><input type="checkbox" data-bind="checked: preserveWhitespace"/>Preserve Whitespace</label><br/>
+          <textarea class="input" data-bind="textInput: $parent.input"></textarea><br/>
+          <label><input type="checkbox" data-bind="checked: $parent.preserveWhitespace"/>Preserve Whitespace</label><br/>
         </span>
         <span class="panel">Output <br/>
-          <span class="output" data-bind="text: output"></span>
+          <span class="output" data-bind="text: $parent.output"></span>
         </span>
       </div>
 
-
+      <br class="clearfix"/>
     </div>
 
   </body>
@@ -70,7 +85,7 @@
   <script type="text/html" id="wheel">
     <div class="wheel">
       <div class="info">
-        <div data-bind="text: type"></div>
+        <!--<div data-bind="text: type"></div>-->
         <div data-bind="text: name"></div>
         <div data-bind="text: model"></div>
         <div data-bind="text: turnoverPositions"></div>
@@ -83,8 +98,13 @@
         <div class="current" data-bind="text: current"></div>
         <div data-bind="text: previous"></div>
       </div>
+      <div class="available-actions">
+        <button data-bind="click: $parent.addRotor">Add</button>
+      </div>
+      <div class="added-actions">
+        <button data-bind="click: $parent.removeRotor">Remove</button>
+      </div>
     </div>
-
   </script>
   <!-- include scripts -->
   <script type="text/javascript" src="js/vendor/jquery/jquery-2.1.4.min.js"></script>
@@ -111,6 +131,13 @@
     appVM.init();
 
     ko.applyBindings(appVM);
+
+//    $('.model .wheel').draggable({
+//      connectToSortable: '.rotor_drop',
+//      start: function(event, ui) {
+//        ko.utils.domData.set(event.target, "ko_dragItem", true);
+//      }
+//    })
 
   </script>
 </html>

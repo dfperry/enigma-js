@@ -1,4 +1,4 @@
-var Stator = function (name, model, wiring) {
+var Stator = function (name, model, base, wiring) {
     'use strict';
 
     var baseWiring = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -12,6 +12,7 @@ var Stator = function (name, model, wiring) {
     self.turnoverPositions = '';
     self.name = name;
     self.model = model;
+    self.base = base;
     self.type = 'Stator';
 
     self.initialPosition = ko.observable('A');
@@ -74,4 +75,8 @@ var Stator = function (name, model, wiring) {
 
     // initialize
     self.reset();
+
+    var clone = function() {
+        return new Stator(name, model, base, wiring);
+    }
 };

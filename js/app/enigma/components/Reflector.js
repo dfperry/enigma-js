@@ -1,4 +1,4 @@
-var Reflector = function (name, model, wiring, turnoverPositions, ring) {
+var Reflector = function (name, model, base, wiring, turnoverPositions, ring) {
     'use strict';
 
     var baseWiring = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -12,6 +12,7 @@ var Reflector = function (name, model, wiring, turnoverPositions, ring) {
     self.turnoverPositions = turnoverPositions ? turnoverPositions.toUpperCase() : '';
     self.name = name;
     self.model = model;
+    self.base = base;
     self.type = 'Reflector';
 
     self.initialPosition = ko.observable('A');
@@ -80,4 +81,8 @@ var Reflector = function (name, model, wiring, turnoverPositions, ring) {
 
     // initialize
     self.reset();
+
+    self.clone = function() {
+        return new Reflector(name, model, base, wiring, turnoverPositions, ring);
+    }
 };
