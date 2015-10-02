@@ -146,6 +146,14 @@
     display: none;
 }
 
+.wheels .wheel .added-actions {
+    display: none;
+}
+
+.wheels .rotors .wheel .added-actions {
+    display: block;
+}
+
 .model .wheel .added-actions {
     display: none;
 }
