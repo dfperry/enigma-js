@@ -17,7 +17,6 @@ var AppVM = function() {
 
     var init = function() {
         enigma.init();
-        enigma.testConfig();
     };
 
     var run = ko.computed(function () {

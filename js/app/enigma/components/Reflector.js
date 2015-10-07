@@ -15,6 +15,8 @@ var Reflector = function (name, model, base, wiring, turnoverPositions, ring) {
     self.base = base;
     self.type = 'Reflector';
 
+    self.state = ko.observable('');
+
     self.initialPosition = ko.observable('A');
 
     var map = {},

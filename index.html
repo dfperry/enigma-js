@@ -2,13 +2,14 @@
 <html>
   <head>
     <title>ENIGMA</title>
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap-3.3.5-dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="vendor/jquery-ui/jquery-ui.min.css" />
     <link rel="stylesheet" type="text/css" href="css/enigma.css" />
-    <link rel="stylesheet" type="text/css" href="js/vendor/jquery-ui/jquery-ui.min.css" />
-
   </head>
   <body>
 
     <div class="enigma" data-bind="with: enigma">
+      <h1>Enigma</h1>
       <div class="model component">
         Presets <select data-bind="value: selectedModel, options: models"></select><br/>
         Available Rotors<br/>
@@ -20,7 +21,7 @@
       </div>
       <div class="wheels component" >
         <span class="wrapper">
-          <div class="label">
+          <div class="head">
             Reflector <br/>
             <select data-bind="value: selectedReflector, options: availableReflectors, optionsText: 'name'"></select><br/>
           </div>
@@ -33,12 +34,12 @@
         </span>
 
         <div class="rotors" >
-          <div class="label">Rotors</div>
+          <div class="head">Rotors</div>
           <div data-bind="sortable: {template: 'wheel', data: selectedRotors}"></div>
         </div>
 
         <span class="wrapper">
-          <div class="label">
+          <div class="head">
             Stator <br/>
             <select data-bind="value: selectedStator, options: availableStators, optionsText: 'name'"></select><br/>
           </div>
@@ -50,20 +51,21 @@
           }" ></span>
         </span>
 
-
+        <br class="clearfix"/>
       </div>
       <div class="plugboard component" data-bind="with: plugboard">
         Connections
         <div>
           <input data-bind="value: newConnection().left" />
           <input data-bind="value: newConnection().right" />
-          <button data-bind="click: addConnection">Add </button>
+          <button class="btn btn-sm" data-bind="click: addConnection"><i class="glyphicon glyphicon-plus-sign"></i> Add </button>
         </div>
-        <div data-bind="foreach: connections">
+        <div class="connections" data-bind="foreach: connections">
           <div class="connection">
-            <span data-bind="text: left"></span> -
+            <span data-bind="text: left"></span>
+            <i class="glyphicon glyphicon-resize-horizontal"></i>
             <span data-bind="text: right"></span>
-            <button data-bind="click: $parent.removeConnection">X</button>
+            <button class="btn btn-sm" title="Remove Connection" data-bind="click: $parent.removeConnection"><i class="glyphicon glyphicon-remove-sign"></i></button>
           </div>
         </div>
       </div>
@@ -77,43 +79,44 @@
         </span>
       </div>
 
-      <br class="clearfix"/>
     </div>
 
   </body>
 
   <script type="text/html" id="wheel">
-    <div class="wheel">
+    <div class="wheel" data-bind="css: state">
       <div class="info">
         <!--<div data-bind="text: type"></div>-->
-        <div data-bind="text: name"></div>
-        <div data-bind="text: model"></div>
-        <div data-bind="text: turnoverPositions"></div>
+        <div class="wheel-name" data-bind="text: name, attr:{title: name}"></div>
+        <div class="wheel-model" data-bind="text: model, attr:{title: model}"></div>
+        <div class="wheel-turnover" data-bind="text: turnoverPositions, attr:{title: turnoverPositions}"></div>
       </div>
       <div class="config">
         Init: <input class="init" data-bind="value: initialPosition"/>
       </div>
       <div class="status">
-        <div data-bind="text: next"></div>
-        <div class="current" data-bind="text: current"></div>
-        <div data-bind="text: previous"></div>
+        <div class="wheel-next" data-bind="text: next"></div>
+        <div class="wheel-current" data-bind="text: current"></div>
+        <div class="wheel-previous" data-bind="text: previous"></div>
       </div>
       <div class="available-actions">
-        <button data-bind="click: $parent.addRotor">Add</button>
+        <button class="btn btn-sm" data-bind="click: $parent.addRotor"><i class="glyphicon glyphicon-plus-sign"></i> Add</button>
       </div>
       <div class="added-actions">
-        <button data-bind="click: $parent.removeRotor">Remove</button>
+        <button class="btn btn-sm" data-bind="click: $parent.removeRotor"><i class="glyphicon glyphicon-remove-sign"></i> Remove</button>
       </div>
     </div>
   </script>
   <!-- include scripts -->
-  <script type="text/javascript" src="js/vendor/jquery/jquery-2.1.4.min.js"></script>
-  <script type="text/javascript" src="js/vendor/jquery-ui/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="vendor/jquery/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="vendor/jquery-ui/jquery-ui.min.js"></script>
 
-  <script type="text/javascript" src="js/vendor/knockout/knockout-3.2.0.js" ></script>
-  <script type="text/javascript" src="js/vendor/knockout/knockout-sortable-0.11.0.min.js"></script>
-  <script type="text/javascript" src="js/vendor/knockout/knockout-postbox-0.4.2-min.js"></script>
-  <script type="text/javascript" src="js/vendor/knockout/knockout.mapping-2.4.1.js"></script>
+  <script type="text/javascript" src="vendor/knockout/knockout-3.2.0.js" ></script>
+  <script type="text/javascript" src="vendor/knockout/knockout-sortable-0.11.0.min.js"></script>
+  <script type="text/javascript" src="vendor/knockout/knockout-postbox-0.4.2-min.js"></script>
+  <script type="text/javascript" src="vendor/knockout/knockout.mapping-2.4.1.js"></script>
+
+  <script type="text/javascript" src="vendor/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
 
   <script type="text/javascript" src="js/app/enigma/utilities.js"></script>
   <script type="text/javascript" src="js/app/enigma/components/Plugboard.js"></script>

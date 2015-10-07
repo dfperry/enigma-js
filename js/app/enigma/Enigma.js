@@ -22,98 +22,100 @@ var Enigma = function(config) {
 
     selectedModel.subscribe(function (val) {
 
-        // update rotors
-        var rotors = [];
-        var rotorModels = [];
-        // first pass gets the matching rotors and names of base models
-        for( var r = 0, rLen = masterRotors.length; r < rLen; r++) {
-            var rotor = masterRotors[r];
-            if( rotor.model == val || !rotor.model) {
-                rotors.push(rotor);
+        if( val) {
+            // update rotors
+            var rotors = [];
+            var rotorModels = [];
+            // first pass gets the matching rotors and names of base models
+            for( var r = 0, rLen = masterRotors.length; r < rLen; r++) {
+                var rotor = masterRotors[r];
+                if( rotor.model == val || !rotor.model) {
+                    rotors.push(rotor);
 
-                // grab base model names
-                for( var rm = 0, rmLen = rotor.base.length; rm < rmLen; rm++ ) {
-                    if(rotorModels.indexOf(rotor.base[rm]) == -1) {
-                        rotorModels.push(rotor.base[rm]);
+                    // grab base model names
+                    for( var rm = 0, rmLen = rotor.base.length; rm < rmLen; rm++ ) {
+                        if(rotorModels.indexOf(rotor.base[rm]) == -1) {
+                            rotorModels.push(rotor.base[rm]);
+                        }
                     }
                 }
             }
-        }
-        // second pass gets rotors matching the base models
-        if( rotorModels.length > 0 ) {
-            for( r = rLen-1; r >=0; r-- ) {
-                rotor = masterRotors[r];
-                if(rotorModels.indexOf(rotor.model) !== -1) {
-                    rotors.unshift(rotor);
-                }
-            }
-        }
-        availableRotors(rotors);
-        if( rotors.length > 3 ) {
-            selectedRotors(rotors.slice(-3));
-        }
-        else {
-            selectedRotors(rotors);
-        }
-
-
-        // update the stators
-        var stators = [];
-        var statorModels = [];
-        // first pass gets the matching stators and names of base models
-        for( var s = 0, sLen = masterStators.length; s < sLen; s++) {
-            var stator = masterStators[s];
-            if( stator.model == val || !stator.model) {
-                stators.push(stator);
-
-                // grab base model names
-                for( var sm = 0, smLen = stator.base.length; sm < smLen; sm++ ) {
-                    if(statorModels.indexOf(stator.base[sm]) == -1) {
-                        statorModels.push(stator.base[sm]);
+            // second pass gets rotors matching the base models
+            if( rotorModels.length > 0 ) {
+                for( r = rLen-1; r >=0; r-- ) {
+                    rotor = masterRotors[r];
+                    if(rotorModels.indexOf(rotor.model) !== -1) {
+                        rotors.unshift(rotor);
                     }
                 }
             }
-        }
-        // second pass gets stators matching the base models
-        if( statorModels.length > 0 ) {
-            for( s = sLen-1; s >=0; s-- ) {
-                stator = masterStators[r];
-                if(statorModels.indexOf(stator.model) !== -1) {
-                    stators.unshift(stator);
-                }
+            availableRotors(rotors);
+            // clear out the previous selection
+            selectedRotors([]);
+            // grab at most the last 3 rotors in the list
+            for( r = rotors.length-1; (r >=0) && (r > rotors.length-4); r--) {
+                selectedRotors.unshift(rotors[r].clone());
             }
-        }
-        availableStators(stators);
-        selectedStator(stators[0]);
 
-        // update the reflectors
-        var reflectors = [];
-        var reflectorModels = [];
-        // first pass gets the matching reflectors and names of base models
-        for( var f = 0, fLen = masterReflectors.length; f < fLen; f++) {
-            var reflector = masterReflectors[f];
-            if( reflector.model == val || !reflector.model) {
-                reflectors.push(reflector);
+            // update the stators
+            var stators = [];
+            var statorModels = [];
+            // first pass gets the matching stators and names of base models
+            for( var s = 0, sLen = masterStators.length; s < sLen; s++) {
+                var stator = masterStators[s];
+                if( stator.model == val || !stator.model) {
+                    stators.push(stator);
 
-                // grab base model names
-                for( var fm = 0, fmLen = reflector.base.length; fm < fmLen; fm++ ) {
-                    if(reflectorModels.indexOf(reflector.base[fm]) == -1) {
-                        reflectorModels.push(reflector.base[fm]);
+                    // grab base model names
+                    for( var sm = 0, smLen = stator.base.length; sm < smLen; sm++ ) {
+                        if(statorModels.indexOf(stator.base[sm]) == -1) {
+                            statorModels.push(stator.base[sm]);
+                        }
                     }
                 }
             }
-        }
-        // second pass gets reflectors matching the base models
-        if( reflectorModels.length > 0 ) {
-            for( f = fLen-1; f >=0; f-- ) {
-                reflector = masterReflectors[f];
-                if(reflectorModels.indexOf(reflector.model) !== -1) {
-                    reflectors.unshift(reflector);
+            // second pass gets stators matching the base models
+            if( statorModels.length > 0 ) {
+                for( s = sLen-1; s >=0; s-- ) {
+                    stator = masterStators[r];
+                    if(statorModels.indexOf(stator.model) !== -1) {
+                        stators.unshift(stator);
+                    }
                 }
             }
+            availableStators(stators);
+            selectedStator(stators[0]);
+
+            // update the reflectors
+            var reflectors = [];
+            var reflectorModels = [];
+            // first pass gets the matching reflectors and names of base models
+            for( var f = 0, fLen = masterReflectors.length; f < fLen; f++) {
+                var reflector = masterReflectors[f];
+                if( reflector.model == val || !reflector.model) {
+                    reflectors.push(reflector);
+
+                    // grab base model names
+                    for( var fm = 0, fmLen = reflector.base.length; fm < fmLen; fm++ ) {
+                        if(reflectorModels.indexOf(reflector.base[fm]) == -1) {
+                            reflectorModels.push(reflector.base[fm]);
+                        }
+                    }
+                }
+            }
+            // second pass gets reflectors matching the base models
+            if( reflectorModels.length > 0 ) {
+                for( f = fLen-1; f >=0; f-- ) {
+                    reflector = masterReflectors[f];
+                    if(reflectorModels.indexOf(reflector.model) !== -1) {
+                        reflectors.unshift(reflector);
+                    }
+                }
+            }
+            availableReflectors(reflectors);
+            selectedReflector(reflectors[0]);
         }
-        availableReflectors(reflectors);
-        selectedReflector(reflectors[0]);
+
     });
 
     var init = function() {
@@ -146,32 +148,45 @@ var Enigma = function(config) {
 
     };
 
+    var styleRotor = function(rotor, state) {
+        rotor.state(state);
+        (function(rotor) {
+            setTimeout(function() {
+                rotor.state('');
+            }, 500);
+        })(rotor);
+    };
+
     var addRotor = function(rotor) {
         var found = false;
 
         for( var i = 0, len = selectedRotors().length; i < len; i++ ) {
             if( selectedRotors()[i].name == rotor.name ) {
                 found = true;
+                styleRotor(rotor, 'warning');
+                styleRotor(selectedRotors()[i], 'warning')
                 break;
             }
         }
 
         if(!found) {
-            selectedRotors.push(rotor.clone());
+            var clone = rotor.clone();
+            selectedRotors.push(clone);
+            styleRotor(rotor, 'added');
+            styleRotor(clone, 'added')
         }
+
     };
 
     var removeRotor = function(rotor) {
         selectedRotors.remove(rotor);
-    };
+        for( var i = 0, len = availableRotors().length; i < len; i++ ) {
+            if( availableRotors()[i].name == rotor.name ) {
+                styleRotor(availableRotors()[i], 'deleted')
+                break;
+            }
+        }
 
-    var testConfig = function() {
-        selectedStator(masterStators[2]);
-        selectedReflector(masterReflectors[3]);
-        selectedRotors.push(masterRotors[9]);
-        selectedRotors.push(masterRotors[10]);
-        selectedRotors.push(masterRotors[11]);
-        selectedRotors.push(masterRotors[12]);
     };
 
     var reset = function () {
@@ -217,7 +232,7 @@ var Enigma = function(config) {
 
             var c = string.charAt(i);
 
-            if( preserveWhitespace && c.match(/\W/)) {
+            if( preserveWhitespace && /\W/.test(c)) {
                 message += c;
                 continue;
             }
@@ -285,7 +300,6 @@ var Enigma = function(config) {
         models: models,
         selectedModel: selectedModel,
         init: init,
-        testConfig: testConfig,
         plugboard: plugboard,
         selectedReflector: selectedReflector,
         selectedRotors: selectedRotors,

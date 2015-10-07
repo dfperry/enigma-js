@@ -15,6 +15,8 @@ var Rotor = function(name, model, base, wiring, turnoverPositions, ring) {
     self.base = base;
     self.type = 'Rotor';
 
+    self.state = ko.observable('');
+
     var initialPosition = ko.observable('A');
     self.initialPosition = ko.computed({
         read: function() {

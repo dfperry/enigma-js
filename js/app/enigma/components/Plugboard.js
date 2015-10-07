@@ -17,7 +17,8 @@ var Connection = function(c1, c2) {
     };
 
     self.isValid = function() {
-        return self.left && self.right && self.left !== self.right;
+        return self.left && self.right && self.left !== self.right &&
+            SINGLE_CHAR.test(self.left) && SINGLE_CHAR.test(self.right);
     }
 };
 
@@ -32,7 +33,7 @@ var Plugboard = function() {
 
     self.addConnection = function() {
 
-        if( self.newConnection() || self.newConnection().isValid() ) {
+        if( self.newConnection() && self.newConnection().isValid() ) {
             var connection = new Connection(
                 self.newConnection().left.toUpperCase(),
                 self.newConnection().right.toUpperCase());

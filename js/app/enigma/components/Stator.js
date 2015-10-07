@@ -15,6 +15,8 @@ var Stator = function (name, model, base, wiring) {
     self.base = base;
     self.type = 'Stator';
 
+    self.state = ko.observable('');
+
     self.initialPosition = ko.observable('A');
 
     var map = {},
