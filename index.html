@@ -2,9 +2,10 @@
 <html>
   <head>
     <title>ENIGMA</title>
+    <link rel="stylesheet" type="text/css" href="css/enigma.css" />
     <link rel="stylesheet" type="text/css" href="vendor/bootstrap-3.3.5-dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="vendor/jquery-ui/jquery-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/enigma.css" />
+
   </head>
   <body>
 
@@ -100,10 +101,10 @@
         <div class="wheel-previous" data-bind="text: previous"></div>
       </div>
       <div class="available-actions">
-        <button class="btn btn-sm" data-bind="click: $parent.addRotor"><i class="glyphicon glyphicon-plus-sign"></i> Add</button>
+        <button class="btn btn-sm btn-primary" data-bind="click: $parent.addRotor"><i class="glyphicon glyphicon-plus-sign"></i> Add</button>
       </div>
       <div class="added-actions">
-        <button class="btn btn-sm" data-bind="click: $parent.removeRotor"><i class="glyphicon glyphicon-remove-sign"></i> Remove</button>
+        <button class="btn btn-sm btn-warning" data-bind="click: $parent.removeRotor"><i class="glyphicon glyphicon-remove-sign"></i> Remove</button>
       </div>
     </div>
   </script>

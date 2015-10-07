@@ -163,8 +163,8 @@ var Enigma = function(config) {
         for( var i = 0, len = selectedRotors().length; i < len; i++ ) {
             if( selectedRotors()[i].name == rotor.name ) {
                 found = true;
-                styleRotor(rotor, 'warning');
-                styleRotor(selectedRotors()[i], 'warning')
+                styleRotor(rotor, 'bg-warning');
+                styleRotor(selectedRotors()[i], 'bg-warning')
                 break;
             }
         }
@@ -172,8 +172,8 @@ var Enigma = function(config) {
         if(!found) {
             var clone = rotor.clone();
             selectedRotors.push(clone);
-            styleRotor(rotor, 'added');
-            styleRotor(clone, 'added')
+            styleRotor(rotor, 'bg-success');
+            styleRotor(clone, 'bg-success')
         }
 
     };
@@ -182,7 +182,7 @@ var Enigma = function(config) {
         selectedRotors.remove(rotor);
         for( var i = 0, len = availableRotors().length; i < len; i++ ) {
             if( availableRotors()[i].name == rotor.name ) {
-                styleRotor(availableRotors()[i], 'deleted')
+                styleRotor(availableRotors()[i], 'bg-danger')
                 break;
             }
         }
