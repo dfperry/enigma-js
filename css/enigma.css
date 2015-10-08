@@ -36,6 +36,8 @@ button.btn-sm {
 .component .panel {
     display: inline-block;
     vertical-align: top;
+    background-color: initial;
+    box-shadow: none;
 }
 
 .wheel {
@@ -146,6 +148,7 @@ button.btn-sm {
     border-radius: 5px;
     padding: 5px;
     height: 80px;
+    margin-top: 5px;
 }
 
 .connection {
