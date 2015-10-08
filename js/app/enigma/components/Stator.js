@@ -17,7 +17,17 @@ var Stator = function (name, model, base, wiring) {
 
     self.state = ko.observable('');
 
-    self.initialPosition = ko.observable('A');
+    var initialPosition = ko.observable('A');
+    self.initialPosition = ko.computed({
+        read: function() {
+            return initialPosition();
+        },
+        write: function(val) {
+            if(val && val.length == 1 && (self.wiring.indexOf(val.toUpperCase()) > -1)) {
+                initialPosition(val.toUpperCase());
+            }
+        }
+    });
 
     var map = {},
         rev = {};
@@ -53,8 +63,13 @@ var Stator = function (name, model, base, wiring) {
         return true;
     };
 
-    self.current = ko.computed(function () {
-        return baseWiring[self.position()];
+    self.current = ko.computed({
+        read:function () {
+            return baseWiring[self.position()];
+        },
+        write: function(val) {
+            self.move(val);
+        }
     });
 
     self.previous = ko.computed(function(){
@@ -72,13 +87,12 @@ var Stator = function (name, model, base, wiring) {
             ? (self.position() + i + self.ROTOR_SIZE )
             : (self.position() + i) % self.ROTOR_SIZE];
         return IToA((arrayVal - self.position() < 0) ? arrayVal - self.position() + self.ROTOR_SIZE : arrayVal - self.position() % self.ROTOR_SIZE);
-
     };
 
     // initialize
     self.reset();
 
-    var clone = function() {
+    self.clone = function() {
         return new Stator(name, model, base, wiring);
     }
 };

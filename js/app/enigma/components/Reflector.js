@@ -17,7 +17,17 @@ var Reflector = function (name, model, base, wiring, turnoverPositions, ring) {
 
     self.state = ko.observable('');
 
-    self.initialPosition = ko.observable('A');
+    var initialPosition = ko.observable('A');
+    self.initialPosition = ko.computed({
+        read: function() {
+            return initialPosition();
+        },
+        write: function(val) {
+            if(val && val.length == 1 && (self.wiring.indexOf(val.toUpperCase()) > -1)) {
+                initialPosition(val.toUpperCase());
+            }
+        }
+    });
 
     var map = {},
         turnoverMap = [];
@@ -78,7 +88,6 @@ var Reflector = function (name, model, base, wiring, turnoverPositions, ring) {
             ? (self.position() + i + self.ROTOR_SIZE )
             : (self.position() + i) % self.ROTOR_SIZE];
         return IToA((arrayVal - self.position() < 0) ? arrayVal - self.position() + self.ROTOR_SIZE : arrayVal - self.position() % self.ROTOR_SIZE);
-
     };
 
     // initialize
